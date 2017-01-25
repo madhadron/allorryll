@@ -1,0 +1,21 @@
+{
+    "compilerOptions": {
+      "alwaysStrict": true,
+      "forceConsistentCasingInFileNames": true,
+      "noFallthroughCasesInSwitch": true,
+      "noImplicitAny": true,
+      "noImplicitReturns": true,
+      "noImplicitThis": true,
+      "noUnusedLocals": true,
+      "noUnusedParameters": true,
+      "strictNullChecks": true,
+      "target": "ES6",
+      "removeComments": true,
+      "preserveConstEnums": true,
+      "outFile": "build/allorryll.js",
+      "sourceMap": true
+    },
+    "include": [
+        "src/**/*.ts"
+    ]
+}
