@@ -1,6 +1,12 @@
-.PHONY: all clean
+.PHONY: all clean test dependencies
 
 clean:
-	rm -rf build
+	rm -rf build node_modules
 
-all:
+dependencies:
+	npm install --save-dev jsdom mocha
+
+test:
+
+
+all: 
