@@ -12,8 +12,9 @@
       "target": "ES6",
       "removeComments": true,
       "preserveConstEnums": true,
-      "outFile": "build/allorryll.js",
-      "sourceMap": true
+      "sourceMap": true,
+      "module": "commonjs",
+      "outDir": "build/"
     },
     "include": [
         "src/**/*.ts"

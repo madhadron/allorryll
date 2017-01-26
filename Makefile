@@ -1,11 +1,14 @@
 .PHONY: all clean test dependencies
-all:
+all: build
+
+build: src/allorryll.ts
 		tsc
 
 clean:
-	rm -rf build node_modules
+	rm -rf build
 
 dependencies:
 	npm install --save-dev jsdom mocha
 
-test:
+test: build
+	./node_modules/mocha/bin/mocha
