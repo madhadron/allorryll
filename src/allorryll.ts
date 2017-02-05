@@ -66,7 +66,7 @@ export interface View extends Observer {
 };
 
 /* For convenience, we sometimes want to append a child, though. */
-export function appendView(el: HTMLElement, view: View): void {
+export function appendView(el: HTMLElement|DocumentFragment, view: View): void {
     var div = el.ownerDocument.createElement('div');
     el.appendChild(div);
     view.writeOver(div);
@@ -121,10 +121,13 @@ export class Label implements View {
 };
 
 /* Button */
-export interface ButtonController {
+export interface ButtonDisplayController {
   getText: (model: Observable) => string,
   getClass?: (model: Observable) => string,
   isEnabled?: (model: Observable) => boolean,
+}
+
+export interface ButtonController extends ButtonDisplayController {
   onClicked?: (model: Observable) => void
 }
 
@@ -146,11 +149,12 @@ export class Button implements View {
     if (this.controller.isEnabled) {
       button.disabled = !this.controller.isEnabled(this.model);
     }
-    if (this.controller.onClicked) {
-      button.addEventListener(
-        'click',
-        this.controller.onClicked.bind(this.controller)
-      );
+    button.addEventListener(
+      'click',
+      () => { if (this.controller.onClicked) this.controller.onClicked(this.model); }
+    );
+    if (this.controller.getClass) {
+      button.setAttribute('class', this.controller.getClass(this.model));
     }
     this.button = button;
     if (el.parentNode) {
@@ -164,8 +168,62 @@ export class Button implements View {
       if (this.controller.isEnabled) {
         this.button.disabled = !this.controller.isEnabled(this.model);
       }
+      if (this.controller.getClass) {
+        this.button.setAttribute('class', this.controller.getClass(this.model));
+      }
     }
   };
 }
 
+/* Dropdown button */
 
+export interface DropdownController extends ButtonDisplayController {
+  getDropdownView: (model: Observable) => View
+}
+
+export class DropdownButton implements View {
+  model: Observable;
+  controller: DropdownController;
+  button: Button;
+  dropdownContainer: HTMLDivElement;
+  dropdownView: View;
+
+  constructor(model: Observable, controller: DropdownController) {
+    this.model = model;
+    this.controller = controller;
+    this.model.addObserver(this);
+  }
+
+  writeOver(el: HTMLElement): void {
+    let doc = el.ownerDocument;
+    let outerSpan = doc.createElement('span');
+
+    let innerDiv = doc.createElement('div');
+    innerDiv.style.display = 'none';
+    innerDiv.style.position = 'absolute';
+
+    this.button = new Button(this.model, {
+      getText: this.controller.getText,
+      getClass: this.controller.getClass,
+      isEnabled: this.controller.isEnabled,
+      onClicked: (_: Observable): void => {
+        innerDiv.style.display = innerDiv.style.display === 'none' ? 'block': 'none';
+      }
+    });
+
+    appendView(outerSpan, this.button);
+    this.dropdownView = this.controller.getDropdownView(this.model);
+    appendView(innerDiv, this.dropdownView);
+    outerSpan.appendChild(innerDiv);
+    this.dropdownContainer = innerDiv;
+    if (el.parentNode) {
+      el.parentNode.replaceChild(outerSpan, el);
+    }
+  }
+
+  update(): void {
+    this.button.update();
+    this.dropdownView.update();
+  }
+
+}

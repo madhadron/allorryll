@@ -1,4 +1,4 @@
-.PHONY: all clean test dependencies
+.PHONY: all clean test dependencies build
 all: build
 
 build: src/allorryll.ts
