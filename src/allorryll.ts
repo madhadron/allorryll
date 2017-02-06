@@ -12,41 +12,30 @@
  * of Observable, that is, observers can register on them to be updated
  * when the model changes.
  */
+export class Observable {
+  observers: Set<Observer>;
 
-export interface Observable {
-    addObserver : (observer: Observer) => void,
-    deleteObserver : (observer: Observer) => void,
-    notify : () => void
+  constructor() {
+    this.observers = new Set<Observer>();
+  }
+
+    addObserver(observer: Observer): void {
+        this.observers.add(observer);
+    };
+
+    deleteObserver(observer: Observer): void {
+        this.observers.delete(observer);
+    };
+
+    notify(): void {
+        this.observers.forEach((observer: Observer) => {
+          observer.update();
+        });
+    };
 }
 
 export interface Observer {
   update: () => void
-};
-
-/* To create a model, call Observable on an object literal, e.g.,
- *
- *     let myModel = Observable({
- *         name: "Boris"
- *     });
- */
-export function Observable(subject: any): Observable {
-  let observers = new Set();
-
-	subject.addObserver = function(observer: Observer): void {
-	    observers.add(observer);
-	};
-
-	subject.deleteObserver = function(observer: Observer): void {
-	    observers.delete(observer);
-	};
-
-	subject.notify = function(): void {
-	    observers.forEach((observer: Observer) => {
-		    observer.update();
-	    });
-  };
-
-  return subject;
 };
 
 /*
@@ -178,7 +167,7 @@ export class Button implements View {
 /* Dropdown button */
 
 export interface DropdownController extends ButtonDisplayController {
-  getDropdownView: (model: Observable) => View
+  dropdownView: View
 }
 
 export class DropdownButton implements View {
@@ -191,6 +180,7 @@ export class DropdownButton implements View {
   constructor(model: Observable, controller: DropdownController) {
     this.model = model;
     this.controller = controller;
+    this.dropdownView = controller.dropdownView
     this.model.addObserver(this);
   }
 
@@ -212,7 +202,6 @@ export class DropdownButton implements View {
     });
 
     appendView(outerSpan, this.button);
-    this.dropdownView = this.controller.getDropdownView(this.model);
     appendView(innerDiv, this.dropdownView);
     outerSpan.appendChild(innerDiv);
     this.dropdownContainer = innerDiv;

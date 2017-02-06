@@ -9,9 +9,8 @@ let makeEmptyPage = function() {
 describe("Label", function() {
   it("label is written with right text", function() {
      let document = makeEmptyPage();
-     let model = allorryll.Observable({
-       labelText: 'boris'
-     });
+     let model = new allorryll.Observable();
+     model.labelText = 'boris';
      let label = new allorryll.Label(model, {
        getText: function(model) { return model.labelText; }
      });
@@ -23,9 +22,8 @@ describe("Label", function() {
 
   it("defaults to no class", function () {
     let document = makeEmptyPage();
-    let model = allorryll.Observable({
-      labelText: 'boris'
-    });
+    let model = new allorryll.Observable();
+    model.labelText = 'boris';
     let label = new allorryll.Label(model, {
       getText: function (model) { return model.labelText; }
     });
@@ -181,7 +179,7 @@ describe("DropdownButton", function() {
     });
     let dropdownButton = new allorryll.DropdownButton(model, {
       getText: function(model) { return 'boris'; },
-      getDropdownView: function(model) { return label; }
+      dropdownView: label
     });
     allorryll.appendView(document.body, dropdownButton);
 

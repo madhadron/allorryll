@@ -1,14 +1,25 @@
-.PHONY: all clean test dependencies build
+.PHONY: all clean test dependencies build dropdown_example
+
+TSC=$(CURDIR)/node_modules/typescript/bin/tsc
+MOCHA=$(CURDIR)/node_modules/mocha/bin/mocha
+BEEFY=$(CURDIR)/node_modules/beefy/bin/beefy
+
 all: build
 
-build: src/allorryll.ts
-		tsc
+build: src/allorryll.ts dependencies
+	$(TSC)
 
 clean:
 	rm -rf build
 
 dependencies:
-	npm install --save-dev jsdom mocha
+	if [ ! -d node_modules ]; then npm install; fi
 
 test: build
-	./node_modules/mocha/bin/mocha
+	$(MOCHA)
+
+dropdown_example:
+	$(BEEFY) src/examples/dropdown.ts:build/examples/dropdown.js -- -p [ tsify ]
+
+
+

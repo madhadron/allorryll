@@ -1,0 +1,13 @@
+{
+    "name": "allorryll",
+    "version": "0.1.0",
+    "license": "MPL-2.0",
+    "devDependencies": {
+        "typescript": "2.1.5",
+        "jsdom": "9.10.0",
+        "mocha": "3.2.0",
+        "browserify": "14.0.0",
+        "tsify": "3.0.1",
+        "beefy": "2.1.8"
+    }
+}

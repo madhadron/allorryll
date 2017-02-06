@@ -9,12 +9,12 @@
       "noUnusedLocals": true,
       "noUnusedParameters": true,
       "strictNullChecks": true,
-      "target": "ES6",
       "removeComments": true,
       "preserveConstEnums": true,
       "sourceMap": true,
-      "module": "commonjs",
-      "outDir": "build/"
+      "outDir": "build/",
+      "target": "ES2015",
+      "module": "CommonJS"
     },
     "include": [
         "src/**/*.ts"
