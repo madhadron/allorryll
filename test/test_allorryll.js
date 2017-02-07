@@ -34,10 +34,9 @@ describe("Label", function() {
 
   it("read the right class", function () {
     let document = makeEmptyPage();
-    let model = allorryll.Observable({
-      labelText: 'boris',
-      classText: 'hilda'
-    });
+    let model = new allorryll.Observable();
+    model.labelText = 'boris';
+    model.classText = 'hilda';
     let label = new allorryll.Label(model, {
       getText: function (model) { return model.labelText; },
       getClass: function (model) { return model.classText; }
@@ -49,10 +48,9 @@ describe("Label", function() {
 
   it("updates its text and class when notified", function() {
     let document = makeEmptyPage();
-    let model = allorryll.Observable({
-      labelText: 'boris',
-      classText: 'hilda'
-    });
+    let model = new allorryll.Observable();
+    model.labelText = 'boris';
+    model.classText = 'hilda';
     let label = new allorryll.Label(model, {
       getText: function (model) { return model.labelText; },
       getClass: function (model) { return model.classText; }
@@ -76,9 +74,8 @@ describe("Label", function() {
 describe("Button", function () {
   it("has the right text", function () {
     let document = makeEmptyPage();
-    let model = allorryll.Observable({
-      buttonText: 'boris',
-    });
+    let model = new allorryll.Observable();
+    model.buttonText = 'boris';
     let button = new allorryll.Button(model, {
       getText: function (model) { return model.buttonText; }
     });
@@ -90,14 +87,13 @@ describe("Button", function () {
 
   it("invokes when clicked", function() {
     let document = makeEmptyPage();
-    let model = allorryll.Observable({
-      buttonText: 'boris',
-      clicked: false,
-      click: function() {
+    let model = new allorryll.Observable();
+    model.buttonText = 'boris';
+    model.clicked = false;
+    model.click = function() {
         this.clicked = true;
         this.notify();
-      }
-    });
+    };
     let button = new allorryll.Button(model, {
       getText: function (model) { return model.buttonText; },
       onClicked: function(model) { 
@@ -114,9 +110,8 @@ describe("Button", function () {
 
   it("defaults to no class", function() {
     let document = makeEmptyPage();
-    let model = allorryll.Observable({
-      name: 'boris',   
-    });
+    let model = new allorryll.Observable();
+    model.name = 'boris';
     let button = new allorryll.Button(model, {
       getText: function (model) { return model.name; }
     });
@@ -127,11 +122,9 @@ describe("Button", function () {
 
    it("reads correct class", function() {
     let document = makeEmptyPage();
-    let model = allorryll.Observable({
-      name: 'boris',
-      class: 'hilda'
-   
-    });
+    let model = new allorryll.Observable();
+    model.name = 'boris';
+    model.class = 'hilda';
     let button = new allorryll.Button(model, {
       getText: function (model) { return model.name; },
       getClass: function(model) { return model.class; }
@@ -142,11 +135,10 @@ describe("Button", function () {
 
   it ("updates text, enabled, and class on notify", function() {
     let document = makeEmptyPage();
-    let model = allorryll.Observable({
-      name: 'boris',
-      class: 'hilda',
-      enabled: true
-    });
+    let model = new allorryll.Observable();
+    model.name = 'boris';
+    model.class = 'hilda';
+    model.enabled = true;
     let button = new allorryll.Button(model, {
       getText: function (model) { return model.name; },
       getClass: function(model) { return model.class; },
@@ -173,7 +165,7 @@ describe("Button", function () {
 describe("DropdownButton", function() {
   it("toggles display on click", function() {
     let document = makeEmptyPage();
-    let model = allorryll.Observable({});
+    let model = new allorryll.Observable();
     let label = new allorryll.Label(model, {
       getText: function(model) { return 'Hilda!'; }
     });
